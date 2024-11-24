@@ -1,8 +1,9 @@
-# React + Vite
+#Confessions
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is Confessions site, which is totally developed for introverts and for the people who lack courage to confess.
 
-Currently, two official plugins are available:
+Feel free to confess.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Don't worry even i can't know your identity.
+
+Link : https://https.uvce-confessions.vercel.app/
