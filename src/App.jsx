@@ -11,7 +11,7 @@ function App() {
   const [count, setcount] = useState("...")
   async function getConfessions() {
     try {
-      const res = await fetch(`https://confessions-backend.vercel.app/confessions?page=${currentPage}`);
+      const res = await fetch(`https://${process.env.URL}.vercel.app/confessions?page=${currentPage}`);
       const data = await res.json();
       setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);
       setcount(data.pagination.totalConfessions)
