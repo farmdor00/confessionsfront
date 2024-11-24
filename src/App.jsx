@@ -6,46 +6,46 @@ function App() {
   const [confessions, setConfessions] = useState([]);
   const [showAdd, setshowAdd] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);  // Track loading state
+  const [loading, setLoading] = useState(false);  
 
-  // Fetch confessions with infinite scroll
+  
   async function getConfessions() {
-    if (loading) return;  // Prevent duplicate requests if already loading
+    if (loading) return;  
 
-    setLoading(true);  // Start loading
+    setLoading(true);  
     try {
       const res = await fetch(`https://confessions-backend.vercel.app/confessions?page=${currentPage}`);
       const data = await res.json();
-      setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);  // Append new confessions
+      setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);  
     } catch (error) {
       console.error('Failed to fetch confessions:', error);
     } finally {
-      setLoading(false);  // Stop loading
+      setLoading(false);  
     }
   }
 
-  // Check if the user has reached the bottom of the page
+  
   const handleScroll = () => {
     const bottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
     if (bottom && !loading) {
-      setCurrentPage((prevPage) => prevPage + 1);  // Move to next page
+      setCurrentPage((prevPage) => prevPage + 1);  
     }
   };
 
   useEffect(() => {
-    getConfessions();  // Fetch initial confessions on page load
-  }, []);  // Only once on mount
+    getConfessions();  
+  }, []);  
 
   useEffect(() => {
-    getConfessions();  // Fetch new confessions when the current page changes
+    getConfessions();  
   }, [currentPage]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);  // Attach scroll event listener
+    window.addEventListener('scroll', handleScroll);  
     return () => {
-      window.removeEventListener('scroll', handleScroll);  // Cleanup listener on unmount
+      window.removeEventListener('scroll', handleScroll);  
     };
-  }, [loading]);  // Re-run on loading state change
+  }, [loading]);  
 
   return (
     <>
@@ -71,15 +71,16 @@ function App() {
               <Confession key={confession._id} text={confession.text} createdAt={confession.createdAt} likes={confession.likes} />
             ))
           ) : (
-            'No Confessions to show.'
+            ''
           )}
         </div>
-
         {loading && (
           <div className="flex justify-center items-center mt-4">
             <span className="loader">Loading...</span>
           </div>
         )}
+
+        
       </div>
     </>
   );
