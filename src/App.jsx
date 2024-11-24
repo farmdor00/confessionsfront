@@ -1,59 +1,44 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Confession from './Components/Confession';
 import Add from './Components/Add';
 
 function App() {
   const [confessions, setConfessions] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
   const [showAdd, setshowAdd] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);  
 
-  
   async function getConfessions() {
-    if (loading) return;  
-
-    setLoading(true);  
     try {
       const res = await fetch(`https://confessions-backend.vercel.app/confessions?page=${currentPage}`);
       const data = await res.json();
-      setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);  
+      setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);
+      if (data.confessions.length < 10) {
+        setHasMore(false);
+      }
     } catch (error) {
       console.error('Failed to fetch confessions:', error);
-    } finally {
-      setLoading(false);  
     }
   }
 
-  
-  const handleScroll = () => {
-    const bottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
-    if (bottom && !loading) {
-      setCurrentPage((prevPage) => prevPage + 1);  
-    }
-  };
-
   useEffect(() => {
-    getConfessions();  
-  }, []);  
-
-  useEffect(() => {
-    getConfessions();  
+    getConfessions();
   }, [currentPage]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);  
-    return () => {
-      window.removeEventListener('scroll', handleScroll);  
-    };
-  }, [loading]);  
+  const fetchMoreData = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+  };
 
   return (
     <>
       <header className="z-30 text-center text-3xl m-auto fixed w-full p-5 bg-neutral-900 text-purple-500">
         <h1>UVCE CONFESSIONS</h1>
       </header>
+      
       <div className="py-24 p-8 sm:p-24 flex flex-col items-center">
-        {showAdd ? (
+      <div className="add">
+      {showAdd ? (
           <Add closeAdd={() => setshowAdd(false)}></Add>
         ) : (
           <button
@@ -64,23 +49,20 @@ function App() {
             Add Confession
           </button>
         )}
-
-        <div id="confessions" className="flex flex-wrap justify-center gap-4 w-full">
-          {confessions.length > 0 ? (
-            confessions.map((confession) => (
+      </div>
+        <InfiniteScroll
+          dataLength={confessions.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<p className='text-center'>Loading Confessions....</p>}
+          endMessage={<div className='flex gap-1 justify-center items-center'><div className='border w-20 h-0'></div>||<div className='border w-20 h-0'></div></div>}
+        >
+          <div className="flex flex-wrap justify-center gap-4 w-full">
+            {confessions.map((confession) => (
               <Confession key={confession._id} text={confession.text} createdAt={confession.createdAt} likes={confession.likes} />
-            ))
-          ) : (
-            ''
-          )}
-        </div>
-        {loading && (
-          <div className="flex justify-center items-center mt-4">
-            <span className="loader">Loading...</span>
+            ))}
           </div>
-        )}
-
-        
+        </InfiniteScroll>
       </div>
     </>
   );

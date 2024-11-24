@@ -57,8 +57,8 @@ const Add = ({ closeAdd }) => {
 
             {}
             {isLoading ? (
-                <div className="flex justify-center items-center mt-4">
-                    <div className="w-8 h-8 border-4 border-t-4 border-purple-700 rounded-full animate-spin"></div>
+                <div className="flex justify-center border-4 border-gray-400 h-8 w-8 rounded-full relative items-center mt-4">
+                    <div className="w-8 h-8 border-t-4 absolute border-purple-700 rounded-[50%] animate-spin "></div>
                 </div>
             ) : (
                 <button
