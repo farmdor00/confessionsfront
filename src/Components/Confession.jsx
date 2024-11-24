@@ -11,11 +11,11 @@ const Confession = (props) => {
             <p className="font-normal text-xl text-gray-500 dark:text-gray-300 min-w-[250px]">
                 {props.text}
             </p>
-            <div className="mt-5">
-            <span >{props.createdAt.slice(0,10)}</span></div>
+            <div className="mt-5 flex justify-between">
+            <span>{props.createdAt.slice(0,10)}</span>
+            <span>{props.createdAt.slice(11,-8)}</span>
+            </div>
         </div>
-
-
     )
 }
 
