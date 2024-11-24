@@ -8,12 +8,13 @@ function App() {
   const [hasMore, setHasMore] = useState(true);
   const [showAdd, setshowAdd] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [count, setcount] = useState("...")
   async function getConfessions() {
     try {
       const res = await fetch(`https://confessions-backend.vercel.app/confessions?page=${currentPage}`);
       const data = await res.json();
       setConfessions((prevConfessions) => [...prevConfessions, ...data.confessions]);
+      setcount(data.pagination.totalConfessions)
       if (data.confessions.length < 10) {
         setHasMore(false);
       }
@@ -37,6 +38,7 @@ function App() {
       </header>
       
       <div className="py-24 p-8 sm:p-24 flex flex-col items-center">
+        <p className='text-xl my-2'>Total Confessions : {count}</p>
       <div className="add">
       {showAdd ? (
           <Add closeAdd={() => setshowAdd(false)}></Add>
