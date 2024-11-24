@@ -20,6 +20,11 @@ const Add = ({ closeAdd }) => {
             return;
         }
 
+        if (!confess.trim()) {
+            alert('Please write your confession.');
+            return;
+        }
+
         setIsLoading(true);
         try {
             const response = await fetch('https://secret213.vercel.app/confessions', {
@@ -35,6 +40,7 @@ const Add = ({ closeAdd }) => {
             if (response.ok) {
                 alert('Confession added successfully');
                 setConfession('');
+                setHCaptchaToken(''); 
                 closeAdd();
             } else {
                 alert(data.message || 'Error adding confession');
@@ -45,7 +51,6 @@ const Add = ({ closeAdd }) => {
         } finally {
             setIsLoading(false);
         }
-        window.location.reload();
     };
 
     return (
@@ -66,9 +71,8 @@ const Add = ({ closeAdd }) => {
             />
             <p>Even the developer will not know your identity. So, feel free to confess.</p>
 
-            
             <HCaptcha
-                sitekey="f51c9268-17ec-4426-82c2-845648d2b2b0" 
+                sitekey="f51c9268-17ec-4426-82c2-845648d2b2b0"
                 onVerify={handleCaptchaVerification}
             />
 
@@ -81,6 +85,7 @@ const Add = ({ closeAdd }) => {
                     type="button"
                     className="focus:outline-none w-full m-3 sm:w-[200px] text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-lg px-5 py-2.5 mb-6 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
                     onClick={handleSubmit}
+                    disabled={isLoading}
                 >
                     Add Confession
                 </button>
