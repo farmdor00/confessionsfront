@@ -13,7 +13,7 @@ const Add = ({ closeAdd }) => {
     const handleSubmit = async () => {
         setIsLoading(true); 
         try {
-            const response = await fetch('http://localhost:5000/confessions', {
+            const response = await fetch('https://confessions-backend.vercel.app/confessions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ function App() {
 
   async function getConfessions() {
     try {
-      const res = await fetch('http://localhost:5000/confessions');
+      const res = await fetch('https://confessions-backend.vercel.app/confessions');
       const confessions = await res.json();
       setConfessions(confessions);
     } catch (error) {
